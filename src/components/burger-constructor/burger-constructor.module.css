@@ -1,0 +1,46 @@
+.burgerConstructor {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin: 100px 0 40px;
+  height: 912px;
+  width: 600px;
+}
+
+.buns {
+  align-self: center;
+  padding-left: 30px;
+}
+
+.scroll {
+  overflow-y: scroll;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0;
+  margin: 0 5px 0 0;
+}
+
+.li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+
+.order {
+  display: flex;
+  align-self: flex-end;
+  gap: 40px;
+}
+
+.price {
+  align-items: center;
+  display: flex;
+}
