@@ -24,13 +24,11 @@ function App() {
 
   return (
     <div className={`custom-scroll ${styles.app}`}>
-      <>
-        <AppHeader />
-        <main className={styles.main}>
-          <BurgerIngredients data={data} />
-          <BurgerConstructor data={data} />
-        </main>
-      </>
+      <AppHeader />
+      <main className={styles.main}>
+        <BurgerIngredients data={data} />
+        <BurgerConstructor data={data} />
+      </main>
     </div>
   );
 }

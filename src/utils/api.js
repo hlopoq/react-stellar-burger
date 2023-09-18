@@ -19,7 +19,5 @@ function requestApi(url, headers) {
 export function getDataIngredients() {
   return requestApi(config.ingredientUrl, {
     "Content-Type": "application/json",
-  }).catch((err) => {
-    console.log(err);
   });
 }

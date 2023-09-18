@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import style from "./ingredient-details.module.css";
+import { ingredientPropType } from "../../utils/prop-types";
 
 export default function IngredientDetails({ myIngredient }) {
   const { image_large, name, calories, proteins, fat, carbohydrates } =
@@ -52,12 +53,5 @@ export default function IngredientDetails({ myIngredient }) {
 }
 
 IngredientDetails.propTypes = {
-  myIngredient: PropTypes.shape({
-    image_large: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    calories: PropTypes.number.isRequired,
-    proteins: PropTypes.number.isRequired,
-    fat: PropTypes.number.isRequired,
-    carbohydrates: PropTypes.number.isRequired,
-  }).isRequired,
+  myIngredient: ingredientPropType.isRequired,
 };

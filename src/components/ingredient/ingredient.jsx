@@ -4,6 +4,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import style from "./ingredient.module.css";
 import { ingredientPropType } from "../../utils/prop-types";
+import PropTypes from "prop-types";
 
 const IngredientItem = ({ ingredients, current }) => {
   const handleItemClick = () => {
@@ -32,6 +33,7 @@ const IngredientItem = ({ ingredients, current }) => {
 
 IngredientItem.propTypes = {
   ingredients: ingredientPropType.isRequired,
+  current: PropTypes.func.isRequired,
 };
 
 export default IngredientItem;

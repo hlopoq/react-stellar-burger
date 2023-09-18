@@ -28,7 +28,7 @@ function Modal({ children, closePopup }) {
         {children}
       </div>
     </>,
-    document.querySelector("#root")
+    document.querySelector("#modals")
   );
 }
 
