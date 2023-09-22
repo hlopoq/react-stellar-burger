@@ -1,0 +1,55 @@
+.header {
+  min-height: 88px;
+  display: flex;
+  justify-content: center;
+  margin: 40px 0px 0px;
+  width: 1920px;
+  max-width: 100%;
+  background-color: #1c1c21;
+}
+
+.logo {
+  display: flex;
+  position: absolute;
+  align-self: center;
+}
+
+.nav {
+  align-self: center;
+}
+
+@media (max-width: 1900px) {
+  .nav {
+    min-width: 90%;
+  }
+}
+
+.list {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+  gap: 8px;
+}
+
+.li {
+  display: flex;
+  gap: 8px;
+}
+
+.li:last-child {
+  margin-left: auto;
+}
+
+.link {
+  display: flex;
+  gap: 8px;
+  text-decoration: none;
+  transition: 0.3s linear;
+  color: inherit;
+  cursor: pointer;
+}
+
+.link:hover {
+  opacity: 0.6;
+}
