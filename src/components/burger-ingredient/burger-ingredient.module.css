@@ -1,0 +1,9 @@
+.item {
+  margin: 0;
+  padding: 0;
+
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
