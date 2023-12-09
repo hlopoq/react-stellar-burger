@@ -1,34 +1,44 @@
+import React from "react";
 import styles from "./app.module.css";
-import { useState } from "react";
-import { useEffect } from "react";
 import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
-import { getDataIngredients } from "../../utils/api";
+import Modal from "../modal/modal";
+import OrderDetails from "../order-details/order-details";
+import IngredientDetails from "../ingredient-details/ingredient-details";
+import { useSelector, useDispatch } from "react-redux";
+import { getIngredients } from "../../services/ingredientsDataSlice";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 function App() {
-  const [data, setData] = useState([]);
-  const fetchIngredients = () => {
-    getDataIngredients()
-      .then((res) => {
-        setData(res.data);
-      })
-      .catch((err) => {
-        console.log("err", err);
-      });
-  };
+  const { ingredients } = useSelector((state) => state.ingredientsData);
+  const modal = useSelector((state) => state.modalData);
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    fetchIngredients();
+  React.useEffect(() => {
+    dispatch(getIngredients());
   }, []);
 
   return (
     <div className={`custom-scroll ${styles.app}`}>
       <AppHeader />
       <main className={styles.main}>
-        <BurgerIngredients data={data} />
-        <BurgerConstructor data={data} />
+        <DndProvider backend={HTML5Backend}>
+          {ingredients.length !== 0 && (
+            <>
+              <BurgerIngredients />
+              <BurgerConstructor />
+            </>
+          )}
+        </DndProvider>
       </main>
+      {modal.active && (
+        <Modal>
+          {modal.type === "order" && <OrderDetails />}
+          {modal.type === "details" && <IngredientDetails />}
+        </Modal>
+      )}
     </div>
   );
 }

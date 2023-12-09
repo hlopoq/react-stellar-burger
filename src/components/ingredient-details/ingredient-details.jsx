@@ -1,26 +1,24 @@
-import React from "react";
-import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 import style from "./ingredient-details.module.css";
 import { ingredientPropType } from "../../utils/prop-types";
 
-export default function IngredientDetails({ myIngredient }) {
-  const { image_large, name, calories, proteins, fat, carbohydrates } =
-    myIngredient;
+export default function IngredientDetails() {
+  const { details } = useSelector((state) => state.modalData);
 
   return (
     <div className={style.ingredientDetails}>
       <h2 className={`${style.title} text text_type_main-large pb-5`}>
         Детали ингредиента
       </h2>
-      <img src={image_large} alt={name} />
-      <span className="text text_type_main-medium pt-4">{name}</span>
+      <img src={details.image_large} alt={details.name} />
+      <span className="text text_type_main-medium pt-4">{details.name}</span>
       <ul className={style.list}>
         <li className={style.li}>
           <p className="text text_type_main-default text_color_inactive">
             Калории, ккал
           </p>
           <p className="text text_type_digits-default text_color_inactive">
-            {calories}
+            {details.calories}
           </p>
         </li>
         <li className={style.li}>
@@ -28,7 +26,7 @@ export default function IngredientDetails({ myIngredient }) {
             Белки, г
           </p>
           <p className="text text_type_digits-default text_color_inactive">
-            {proteins}
+            {details.proteins}
           </p>
         </li>
         <li className={style.li}>
@@ -36,7 +34,7 @@ export default function IngredientDetails({ myIngredient }) {
             Жиры, г
           </p>
           <p className="text text_type_digits-default text_color_inactive">
-            {fat}
+            {details.fat}
           </p>
         </li>
         <li className={style.li}>
@@ -44,7 +42,7 @@ export default function IngredientDetails({ myIngredient }) {
             Углеводы, г
           </p>
           <p className="text text_type_digits-default text_color_inactive">
-            {carbohydrates}
+            {details.carbohydrates}
           </p>
         </li>
       </ul>
@@ -53,5 +51,5 @@ export default function IngredientDetails({ myIngredient }) {
 }
 
 IngredientDetails.propTypes = {
-  myIngredient: ingredientPropType.isRequired,
+  details: ingredientPropType,
 };
