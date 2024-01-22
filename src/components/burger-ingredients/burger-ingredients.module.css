@@ -1,3 +1,8 @@
+.tab {
+  display: flex;
+  padding: 20px 0 20px;
+}
+
 .burgerIngredients {
   display: flex;
   flex-direction: column;
@@ -20,9 +25,4 @@
   display: flex;
   gap: 32px 24px;
   flex-wrap: wrap;
-}
-
-.tab {
-  display: flex;
-  padding: 20px 0 20px;
 }

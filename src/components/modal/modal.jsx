@@ -1,40 +1,46 @@
-import { useEffect } from "react";
+import React from "react";
+import ReactDOM from "react-dom";
+import ModalOverlay from "../modal-overlay/modal-overlay";
 import PropTypes from "prop-types";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import ReactDOM from "react-dom";
 import style from "./modal.module.css";
-import ModalOverlay from "../modal-overlay/modal-overlay";
+import { useDispatch } from "react-redux";
+import { closeModal } from "../../services/modalDataSlice";
 
-function Modal({ children, closePopup }) {
-  useEffect(() => {
+function Modal({ children }) {
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
     function closePopupEsc(evt) {
       if (evt.key === "Escape") {
-        closePopup();
+        dispatch(closeModal());
       }
     }
+
     document.addEventListener("keydown", closePopupEsc);
     return () => {
       document.removeEventListener("keydown", closePopupEsc);
     };
-  }, [closePopup]);
+  }, [dispatch]);
 
   return ReactDOM.createPortal(
-    <>
-      <ModalOverlay closePopup={closePopup} />
-      <div className={style.modal}>
-        <button onClick={closePopup} className={style.closeButton}>
+    <ModalOverlay>
+      <div className={style.modal} onClick={(evt) => evt.stopPropagation()}>
+        <button
+          onClick={() => dispatch(closeModal())}
+          className={style.closeButton}
+        >
           <CloseIcon />
         </button>
         {children}
       </div>
-    </>,
+    </ModalOverlay>,
     document.querySelector("#modals")
   );
 }
 
 Modal.propTypes = {
   children: PropTypes.node.isRequired,
-  closePopup: PropTypes.func.isRequired,
 };
 
 export default Modal;

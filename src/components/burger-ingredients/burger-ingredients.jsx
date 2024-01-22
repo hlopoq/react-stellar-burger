@@ -1,92 +1,89 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
+import React, { useState, useEffect, useRef } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import style from "./burger-ingredients.module.css";
-import Modal from "../modal/modal";
-import IngredientDetails from "../ingredient-details/ingredient-details";
 import IngredientItem from "../ingredient/ingredient";
-import { ingredientPropType } from "../../utils/prop-types";
+import { useSelector } from "react-redux";
+import { useInView } from "react-intersection-observer";
 
-export default function BurgerIngredients({ data }) {
-  const [modalActive, setModalActive] = useState(false);
-  const [currentCategory, setCurrentCategory] = useState("bun");
-  const [selectedIngredient, setSelectedIngredient] = useState(null);
+export default function BurgerIngredients() {
+  const { ingredients } = useSelector((state) => state.ingredientsData);
+  const [current, setCurrent] = useState("buns");
+  const [refBun, bunInView] = useInView({ threshold: 0 });
+  const [refSauce, sauceInView] = useInView({ threshold: 0 });
+  const [refMain, mainInView] = useInView({ threshold: 0 });
 
-  const handleOpen = (ingredient) => {
-    setSelectedIngredient(ingredient);
-    setModalActive(true);
-  };
-
-  const handleClose = () => {
-    setSelectedIngredient(null);
-    setModalActive(false);
-  };
-
-  const categories = [
-    { key: "bun", label: "Булки" },
-    { key: "sauce", label: "Соусы" },
-    { key: "main", label: "Начинки" },
-  ];
-
-  const filterIngredientsByCategory = (category) => {
-    return data.filter((ingredient) => ingredient.type === category);
-  };
-
-  const scrollToCategory = (category) => {
-    const element = document.querySelector(`#${category}`);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
+  useEffect(() => {
+    if (bunInView) {
+      setCurrent("buns");
+    } else if (sauceInView) {
+      setCurrent("sauces");
+    } else if (mainInView) {
+      setCurrent("mains");
     }
-  };
+  }, [bunInView, sauceInView, mainInView]);
+
+  const bunsArray = ingredients.filter((item) => item.type === "bun");
+  const saucesArray = ingredients.filter((item) => item.type === "sauce");
+  const mainsArray = ingredients.filter((item) => item.type === "main");
+
+  function handleTabClick(value) {
+    const category = document.querySelector(`#${value}`);
+    setCurrent(value);
+    category.scrollIntoView({ behavior: "smooth" });
+  }
 
   return (
-    <section className={style.burgerIngredients}>
+    <section className={`${style.burgerIngredients}`}>
       <h1 className="text text_type_main-large">Соберите бургер</h1>
       <div className={style.tab}>
-        {categories.map((category) => (
-          <Tab
-            key={category.key}
-            value={category.key}
-            active={currentCategory === category.key}
-            onClick={() => {
-              setCurrentCategory(category.key);
-              scrollToCategory(category.key);
-            }}
-          >
-            {category.label}
-          </Tab>
-        ))}
+        <Tab
+          value="buns"
+          active={current === "buns"}
+          onClick={() => handleTabClick("buns", refBun)}
+        >
+          Булки
+        </Tab>
+        <Tab
+          value="sauces"
+          active={current === "sauces"}
+          onClick={() => handleTabClick("sauces", refSauce)}
+        >
+          Соусы
+        </Tab>
+        <Tab
+          value="mains"
+          active={current === "mains"}
+          onClick={() => handleTabClick("mains", refMain)}
+        >
+          Начинки
+        </Tab>
       </div>
-      <div className={`custom-scroll ${style.scrollIngredients}`}>
-        {categories.map((category) => (
-          <div key={category.key}>
-            <h2
-              id={category.key}
-              className="text text_type_main-medium pt-5 pb-5"
-            >
-              {category.label}
-            </h2>
-            <ul className={`${style.list} pt-5 pb-5`}>
-              {filterIngredientsByCategory(category.key).map((ingredient) => (
-                <IngredientItem
-                  key={ingredient._id}
-                  ingredients={ingredient}
-                  current={() => handleOpen(ingredient)}
-                />
-              ))}
-            </ul>
-          </div>
-        ))}
+      <div className={`${style.scrollIngredients} custom-scroll`}>
+        <h2 id="buns" className="text text_type_main-medium pt-5 pb-5">
+          Булки
+        </h2>
+        <div className={`${style.list} pt-5 pb-5`} ref={refBun}>
+          {bunsArray.map((item) => (
+            <IngredientItem data={item} key={item._id} />
+          ))}
+        </div>
+        <h2 id="sauces" className="text text_type_main-medium pt-5 pb-5">
+          Соусы
+        </h2>
+        <div className={`${style.list} pt-5 pb-5`} ref={refSauce}>
+          {saucesArray.map((item) => (
+            <IngredientItem data={item} key={item._id} />
+          ))}
+        </div>
+        <h2 id="mains" className="text text_type_main-medium pt-5 pb-5">
+          Начинки
+        </h2>
+        <div className={`${style.list} pt-5 pb-5`} ref={refMain}>
+          {mainsArray.map((item) => (
+            <IngredientItem data={item} key={item._id} />
+          ))}
+        </div>
       </div>
-      {modalActive && selectedIngredient && (
-        <Modal closePopup={handleClose}>
-          <IngredientDetails myIngredient={selectedIngredient} />
-        </Modal>
-      )}
     </section>
   );
 }
-
-BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(ingredientPropType).isRequired,
-};
